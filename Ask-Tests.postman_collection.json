@@ -1,0 +1,378 @@
+{
+  "info": {
+    "_postman_id": "963b173d-c5c1-41fe-b13d-3c43ce6358f4",
+    "name": "Ask-Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55370566",
+    "_collection_link": "https://go.postman.co/collection/55370566-963b173d-c5c1-41fe-b13d-3c43ce6358f4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "sign-in[T]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response time is less than 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});\n\npm.test(\"Body matches string = TEACHER\", function () {\n    pm.expect(pm.response.text()).to.include(\"TEACHER\");\n});\n\nvar jsonData = pm.response.json();\n\npm.test(\"User role = Teacher\", function () {\n\n    pm.expect(jsonData.user.role).to.eql(\"TEACHER\");\n});\n\npm.environment.set(\"teacherToken\",jsonData.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_12e}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"manjutarte@cuvox.de\",\n  \"password\": \"abc1234\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sign-in",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sign-in"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "sign-in - 404 error",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Body matches string\", function () {\n    pm.expect(pm.response.text()).to.include(\"Authentication failed. User not found or password does not matc\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\" : \"mt_snow@gmaesofthrone.com\",\n    \"password\" : \"GamesOfThrones\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sign-in",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sign-in"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "sign-in-[S]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response time is less than 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});\n\nvar jsonData = pm.response.json();\npm.test(\"User role = Student\", function () {\n\n\n    pm.expect(jsonData.user.role).to.eql(\"STUDENT\");\n});\n\npm.environment.set(\"studentToken\", jsonData.token)\n\npm.environment.set(\"studentId\",jsonData.user.id);\n\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{studentToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\"email\": \"vishruttarte@dayrep.com\",\n\"password\": \"abc1234\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sign-in",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sign-in"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "quiz - [T] New quiz",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response time is less than 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});\n\nvar jsonData = pm.response.json();\npm.environment.set(\"quizId\", jsonData.id);\n\n\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0tw0}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo Quiz-Manju 10/06/26\",\n  \"totalScore\": 18,\n  \"passingPercentage\": 75,\n  \"showStopperQuestion\": 1,\n  \"questions\": [\n    {\n      \"type\": \"TEXTUAL\",\n      \"question\": \"What is your name?\",\n      \"score\": 5\n    },\n    {\n      \"type\": \"SINGLE_CHOICE\",\n      \"question\": \"Which city is city largest in California?\",\n      \"score\": 7,\n      \"answer\": 2,\n      \"hasOtherOption\": false,\n      \"options\": [\n        \"San Francisco\",\n        \"Sacramento\",\n        \"Los Angeles\",\n        \"Redding\"\n      ]\n    },\n    {\n      \"type\": \"MULTIPLE_CHOICE\",\n      \"question\": \"Who was apple founded by?\",\n      \"score\": 6,\n      \"answers\": [\n        0,\n        1,\n        2\n      ],\n      \"hasOtherOption\": true,\n      \"options\": [\n        \"Steve Jobs\",\n        \"Steve Wozniak\",\n        \"Ronald Wayne\",\n        \"Ronald Reagan\"\n      ]\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/quiz",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "quiz"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/quiz- [T] Update quiz name",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n\npm.test(\"Response time is less than 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{teacherToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo Quiz1-Manju 10/06/26 Updated\",\n  \"totalScore\": 18,\n  \"passingPercentage\": 75,\n  \"showStopperQuestion\": 1,\n  \"questions\": [\n    {\n      \"type\": \"TEXTUAL\",\n      \"question\": \"What is your name?\",\n      \"score\": 5\n    },\n    {\n      \"type\": \"SINGLE_CHOICE\",\n      \"question\": \"Which city is city largest in California?\",\n      \"score\": 7,\n      \"answer\": 2,\n      \"hasOtherOption\": false,\n      \"options\": [\n        \"San Francisco\",\n        \"Sacramento\",\n        \"Los Angeles\",\n        \"Redding\"\n      ]\n    },\n    {\n      \"type\": \"MULTIPLE_CHOICE\",\n      \"question\": \"Who was apple founded by?\",\n      \"score\": 6,\n      \"answers\": [\n        0,\n        1,\n        2\n      ],\n      \"hasOtherOption\": true,\n      \"options\": [\n        \"Steve Jobs\",\n        \"Steve Wozniak\",\n        \"Ronald Wayne\",\n        \"Ronald Reagan\"\n      ]\n    }\n  ],\n  \"id\": {{quizId}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/quiz",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "quiz"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/quizes - [T] List of quizzes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response time is less than 1000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1000);\n});\n\npm.test(\"Response is an array of quizzes\", function () {\n    const responseJson = pm.response.json();\n    pm.expect(responseJson).to.be.an('array');\n    pm.expect(responseJson.length).to.be.above(0);\n});\n\npm.test(\"Verify updated quiz name\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData[0].name).to.eql(\"Demo Quiz 10/06/26-Manju Updated\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{teacherToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/quizzes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "quizzes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/assignment -[T] -  New assignment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Response time is less than 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});\n\nvar jsonData = pm.response.json();\n\n\npm.environment.set(\"assigmentId\", jsonData[0].id);\npm.environment.set(\"assignmentGroupID\", jsonData[jsonData.length-1].assignmentGroupID);\n\n\npm.test(\"Status, result, gradedBy before submission\", function () {\n    pm.expect(jsonData[0].status).to.eql(\"ASSIGNED\");\n    pm.expect(jsonData[0].result).to.eql(\"PENDING\");\n    pm.expect(jsonData[0].gradedBy).to.eql(\"NONE\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{teacherToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"quizId\": {{quizId}},\n  \"userIds\": [{{studentId}}]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/assignment",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "assignment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/assignments - [T]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Response time is less than 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});\n\npm.test(\"Response body is not empty\", function () {\n    pm.expect(pm.response.text()).to.not.be.empty;\n});\n\nvar myAssignment = pm.environment.get(\"assigmentId\");\n\npm.test(\"Verify assigmentId\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData[jsonData.length-1].id).to.eql(myAssignment);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{teacherToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}} /assignments",
+          "host": [
+            "{{baseUrl}} "
+          ],
+          "path": [
+            "assignments"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_0tw0",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_12e3",
+      "secret": true
+    }
+  ]
+}
